@@ -3,10 +3,25 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 )
 
 func main() {
+	var logFile string = "gopdate.log"
+	file, err := os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+	if err != nil {
+		if err != nil {
+			log.Panicln("Cannot read or create logfile")
+			os.Exit(-1)
+		}
+	}
+	defer file.Close()
+
+	log.SetOutput(file)
+
+	log.Println("Started")
 	for {
 		config, err := OpenConfig()
 
@@ -16,7 +31,6 @@ func main() {
 			config, _ = OpenConfig()
 		}
 		makeUpdate(config)
-		fmt.Println("-------------------------------------------------")
 		time.Sleep(time.Duration(config.Seconds) * time.Second)
 	}
 }
@@ -29,7 +43,18 @@ func makeUpdate(config Config) {
 		return
 	}
 
-	for _, dynHost := range config.Data {
+	if len(config.Data) == 0 {
+		log.Fatalln("No domain specified")
+		return
+	}
+
+	for i, dynHost := range config.Data {
+
+		if dynHost.Domain == "" {
+			log.Printf("No domain specified for the domain %d", i)
+			break
+		}
+
 		if CheckIP(ip, dynHost) {
 			log.Printf("Domain %s has already this IP: %s\n", dynHost.Domain, ip.IP)
 		} else {

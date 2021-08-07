@@ -44,7 +44,7 @@ func makeUpdate(config Config) {
 	}
 
 	if len(config.Data) == 0 {
-		log.Fatalln("No domain specified")
+		log.Println("No domain specified")
 		return
 	}
 

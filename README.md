@@ -17,9 +17,9 @@ configuration:
     "seconds":300,
     "config":[
         {
-            "domain": "",
-            "username": "",
-            "pasword": ""
+            "domain": "test.domain.com",
+            "username": "domain.com-dynhost",
+            "pasword": "YourDynHostPassword"
         }
     ]
 }

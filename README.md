@@ -7,7 +7,7 @@ You can update the configuration file even if the script is running and the new 
 
 ## Usage
 
-###Configuration example
+### Configuration example
 
 If no configuration file is found a new one will be created
 

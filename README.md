@@ -19,7 +19,7 @@ configuration:
         {
             "domain": "test.domain.com",
             "username": "domain.com-dynhost",
-            "pasword": "YourDynHostPassword"
+            "password": "YourDynHostPassword"
         }
     ]
 }

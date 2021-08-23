@@ -33,7 +33,7 @@ func GetWanIP() (WanIP, error) {
 	api := WanIP{}
 	ip, err := consensus.ExternalIP()
 	if err != nil {
-		return api, errors.New("Cannot get wan ip") // print IPv4/IPv6 in string format
+		return api, errors.New("Cannot get wan ip")
 	}
 	api.IP = ip.To4().String()
 	return api, nil

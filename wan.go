@@ -1,12 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
-	"io/ioutil"
-	"log"
 	"net"
-	"net/http"
+
+	externalip "github.com/glendc/go-external-ip"
 )
 
 type WanIP struct {
@@ -31,21 +29,12 @@ func CheckIP(ip WanIP, dynHost DynHost) bool {
 }
 
 func GetWanIP() (WanIP, error) {
-	resp, err := http.Get("https://api.ipify.org?format=json")
-
-	var api WanIP
+	consensus := externalip.DefaultConsensus(nil, nil)
+	api := WanIP{}
+	ip, err := consensus.ExternalIP()
 	if err != nil {
-		log.Fatalln(err)
+		return api, errors.New("Cannot get wan ip") // print IPv4/IPv6 in string format
 	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	parserError := json.Unmarshal(body, &api)
-
-	if parserError != nil {
-		return api, errors.New("Cannot get ip wan")
-	}
+	api.IP = ip.To4().String()
 	return api, nil
 }
